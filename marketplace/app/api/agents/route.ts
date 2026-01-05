@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     const apiKey = request.headers.get('x-api-key');
     const validKey = process.env.MARKETPLACE_API_KEY;
 
-    if (!validatedApiKey(apiKey, validKey)) {
+    if (!validatedApiKey(apiKey, validKey, request)) {
         return NextResponse.json({ error: 'Unauthorized: Invalid API Key' }, { status: 401 });
     }
 
@@ -32,8 +32,13 @@ export async function GET(request: NextRequest) {
     });
 }
 
-function validatedApiKey(headerKey: string | null, envKey: string | undefined): boolean {
-    if (!envKey) return true; // Dev mode: if no key set, allow all (or fail safe, but for hackathon allow)
+function validatedApiKey(headerKey: string | null, envKey: string | undefined, request: NextRequest): boolean {
+    // Allow localhost requests for local development
+    const host = request.headers.get('host') || '';
+    if (host.includes('localhost') || host.includes('127.0.0.1')) {
+        return true;
+    }
+    if (!envKey) return true; // Dev mode: if no key set, allow all
     return headerKey === envKey;
 }
 

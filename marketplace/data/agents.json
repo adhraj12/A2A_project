@@ -3,7 +3,7 @@
     "id": "agent_demo_001",
     "name": "Pune Chemist",
     "category": "healthcare",
-    "description": "24/7 Pharmacy with home delivery. Specialized in critical medicines.",
+    "description": "24/7 Pharmacy with home delivery. Specialized in critical medicines. Ecosprin, Dolo, and more.",
     "address": {
       "street": "Shop 4, Galaxy Apartments",
       "city": "Pune",
@@ -11,13 +11,14 @@
       "pincode": "411038",
       "country": "India"
     },
-    "endpoint": "https://pune-chemist-agent.vercel.app/api/agent",
+    "endpoint": "http://localhost:8001",
     "registeredAt": "2026-01-01T12:00:00Z"
   },
   {
+    "id": "agent_demo_002",
     "name": "City Health",
     "category": "healthcare",
-    "description": "Mumbai central pharmacy.",
+    "description": "Mumbai's trusted pharmacy chain. Competitive prices on all medicines.",
     "address": {
       "street": "56 West Street",
       "city": "Mumbai",
@@ -25,8 +26,7 @@
       "pincode": "400001",
       "country": "India"
     },
-    "endpoint": "https://cityhealth.com",
-    "id": "agent_1767607305591_akhtdcj88",
+    "endpoint": "http://localhost:8002",
     "registeredAt": "2026-01-05T10:01:45.591Z"
   }
 ]

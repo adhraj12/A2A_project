@@ -1,0 +1,10 @@
+[
+  {
+    "tx_id": "tx_b95264d4",
+    "product": "Ecosprin 75mg",
+    "qty": 5,
+    "amount": 22.5,
+    "contact": "alice@example.com",
+    "status": "PENDING_PAYMENT"
+  }
+]

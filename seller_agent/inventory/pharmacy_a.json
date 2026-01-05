@@ -1,0 +1,32 @@
+{
+  "store_name": "Pune Chemist",
+  "location": "Kothrud",
+  "products": [
+    {
+      "id": "sku_001",
+      "name": "Ecosprin 75mg",
+      "tags": [
+        "blood thinner",
+        "heart",
+        "headache"
+      ],
+      "stock": 45,
+      "price": 4.5,
+      "currency": "INR",
+      "min_order_qty": 1
+    },
+    {
+      "id": "sku_002",
+      "name": "Dolo 650",
+      "tags": [
+        "fever",
+        "pain",
+        "paracetamol"
+      ],
+      "stock": 0,
+      "price": 3.0,
+      "currency": "INR",
+      "min_order_qty": 10
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+    "store_name": "City Health",
+    "location": "Mumbai",
+    "products": [
+        {
+            "id": "sku_001",
+            "name": "Ecosprin 75mg",
+            "tags": [
+                "blood thinner",
+                "heart",
+                "headache"
+            ],
+            "stock": 100,
+            "price": 4.20,
+            "currency": "INR",
+            "min_order_qty": 1
+        },
+        {
+            "id": "sku_002",
+            "name": "Dolo 650",
+            "tags": [
+                "fever",
+                "pain",
+                "paracetamol"
+            ],
+            "stock": 200,
+            "price": 3.50,
+            "currency": "INR",
+            "min_order_qty": 10
+        }
+    ]
+}
