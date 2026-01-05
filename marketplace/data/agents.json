@@ -1,0 +1,32 @@
+[
+  {
+    "id": "agent_demo_001",
+    "name": "Pune Chemist",
+    "category": "healthcare",
+    "description": "24/7 Pharmacy with home delivery. Specialized in critical medicines.",
+    "address": {
+      "street": "Shop 4, Galaxy Apartments",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "pincode": "411038",
+      "country": "India"
+    },
+    "endpoint": "https://pune-chemist-agent.vercel.app/api/agent",
+    "registeredAt": "2026-01-01T12:00:00Z"
+  },
+  {
+    "name": "City Health",
+    "category": "healthcare",
+    "description": "Mumbai central pharmacy.",
+    "address": {
+      "street": "56 West Street",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400001",
+      "country": "India"
+    },
+    "endpoint": "https://cityhealth.com",
+    "id": "agent_1767607305591_akhtdcj88",
+    "registeredAt": "2026-01-05T10:01:45.591Z"
+  }
+]
