@@ -18,7 +18,7 @@ from tools import TOOLS, search_marketplace, contact_seller, place_order
 load_dotenv()
 
 # --- Configuration ---
-API_KEY = os.getenv("GEMINI_API_KEY", "Put your API key here")
+API_KEY = os.getenv("GEMINI_API_KEY", "put your api key here")
 genai.configure(api_key=API_KEY)
 
 app = FastAPI(title="Protocol Zero - Buyer Agent")
@@ -33,10 +33,15 @@ app.add_middleware(
 )
 
 # --- Request/Response Models ---
+class UserDetails(BaseModel):
+    delivery_address: str = "123 Demo Street, Pune 411038"
+    phone: str = "9999999999"
+    email: str = "user@demo.com"
+
 class ChatRequest(BaseModel):
     message: str
     user_location: Optional[str] = "411038"  # Default pincode
-    user_contact: Optional[str] = "user@demo.com"  # For order placement
+    user_details: Optional[UserDetails] = None  # For order placement
 
 class ChatResponse(BaseModel):
     response: str
@@ -50,23 +55,26 @@ Your job is to help users find and purchase products from autonomous seller agen
 You have access to these tools:
 1. search_marketplace(category, pincode) - Find seller agents by category (healthcare, food, retail) and location
 2. contact_seller(agent_url, product_query, quantity) - Check price and availability with a specific seller
-3. place_order(agent_url, product_query, quantity, user_contact) - Complete a purchase after user confirms
+3. place_order(agent_url, product_query, quantity, delivery_address, phone, email) - Complete a purchase after user confirms
 
 WORKFLOW:
 1. When user wants to buy something, first determine the category (medicine=healthcare, food=food, etc.)
 2. Search the marketplace to find relevant sellers
 3. Contact ALL found sellers in parallel to compare prices
 4. Present the best options to the user
-5. If user confirms, place the order and provide the payment link
+5. If user confirms, place the order using their delivery details and provide the payment link
 
 IMPORTANT RULES:
 - Always compare prices from multiple sellers before recommending
 - Never place an order without explicit user confirmation (they must say "yes", "confirm", "order", etc.)
 - Be concise but friendly in your responses
 - If no sellers are found or all are unreachable, inform the user clearly
+- When placing an order, ALWAYS use the user's delivery details provided below
 
 User's location pincode: {pincode}
-User's contact: {contact}
+User's delivery address: {delivery_address}
+User's phone: {phone}
+User's email: {email}
 """
 
 # --- The Agentic Loop ---
@@ -79,13 +87,18 @@ async def chat(request: ChatRequest):
     actions_log = []
     order_result = None
     
+    # Get user details or use defaults
+    user_details = request.user_details or UserDetails()
+    
     # Initialize model with tools
     model = genai.GenerativeModel(
         'gemini-2.5-flash',
         tools=TOOLS,
         system_instruction=SYSTEM_PROMPT.format(
             pincode=request.user_location,
-            contact=request.user_contact
+            delivery_address=user_details.delivery_address,
+            phone=user_details.phone,
+            email=user_details.email
         )
     )
     
@@ -140,7 +153,7 @@ class MultiTurnChatRequest(BaseModel):
     session_id: str
     message: str
     user_location: Optional[str] = "411038"
-    user_contact: Optional[str] = "user@demo.com"
+    user_details: Optional[UserDetails] = None
 
 @app.post("/chat/session", response_model=ChatResponse)
 async def chat_session(request: MultiTurnChatRequest):
@@ -158,7 +171,9 @@ async def chat_session(request: MultiTurnChatRequest):
             tools=TOOLS,
             system_instruction=SYSTEM_PROMPT.format(
                 pincode=request.user_location,
-                contact=request.user_contact
+                delivery_address=request.user_details.delivery_address if request.user_details else "123 Demo Street",
+                phone=request.user_details.phone if request.user_details else "9999999999",
+                email=request.user_details.email if request.user_details else "user@demo.com"
             )
         )
         chat = model.start_chat(enable_automatic_function_calling=True)

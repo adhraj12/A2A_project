@@ -80,7 +80,9 @@ class NegotiationResponse(BaseModel):
 class OrderRequest(BaseModel):
     product_query: str
     quantity: int
-    user_contact: str
+    delivery_address: str
+    phone: str
+    email: str
 
 class OrderResponse(BaseModel):
     status: str
@@ -236,7 +238,9 @@ async def create_order(request: OrderRequest):
         "product": found_item["name"],
         "qty": request.quantity,
         "amount": found_item["price"] * request.quantity,
-        "contact": request.user_contact,
+        "delivery_address": request.delivery_address,
+        "phone": request.phone,
+        "email": request.email,
         "status": "PENDING_PAYMENT"
     }
     

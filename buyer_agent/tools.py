@@ -103,7 +103,14 @@ def contact_seller(agent_url: str, product_query: str, quantity: int = 1) -> Dic
         }
 
 
-def place_order(agent_url: str, product_query: str, quantity: int, user_contact: str) -> Dict[str, Any]:
+def place_order(
+    agent_url: str, 
+    product_query: str, 
+    quantity: int, 
+    delivery_address: str,
+    phone: str,
+    email: str
+) -> Dict[str, Any]:
     """
     Place an order with a seller agent after user confirmation.
     
@@ -111,12 +118,15 @@ def place_order(agent_url: str, product_query: str, quantity: int, user_contact:
         agent_url: The endpoint URL of the seller agent
         product_query: The product to order
         quantity: Number of units to order
-        user_contact: User's contact information (phone/email)
+        delivery_address: Full delivery address (street, city, pincode)
+        phone: User's phone number for delivery updates
+        email: User's email for order confirmation
     
     Returns:
         A dictionary with transaction ID and payment link.
     """
     print(f"[Tool] Placing order at {agent_url}: {product_query} x{quantity}")
+    print(f"[Tool] Delivery to: {delivery_address}, Phone: {phone}, Email: {email}")
     
     # Normalize URL - ensure it ends with /order
     order_url = agent_url.rstrip('/')
@@ -127,7 +137,9 @@ def place_order(agent_url: str, product_query: str, quantity: int, user_contact:
         payload = {
             "product_query": product_query,
             "quantity": quantity,
-            "user_contact": user_contact
+            "delivery_address": delivery_address,
+            "phone": phone,
+            "email": email
         }
         
         response = requests.post(order_url, json=payload, timeout=15)
